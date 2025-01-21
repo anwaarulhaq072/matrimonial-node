@@ -2,10 +2,16 @@
 const db = require("../database.js");
 
 exports.createStudent = async (req, res) => {
- 
+    // res.send(Object.keys(req.body)[0])
+   
     try {
+        const user = {
+            name: req.body.name,
+            email: req.body.email
+        }
         const result = await new Promise((resolve,reject)=>{
-            db.query("SELECT * FROM students", (err, rows, fields) => {
+            var query = `INSERT INTO students SET ?`;
+            db.query(query,user, function (err, rows) {
                 if (err) { reject(err) };
                 // var users = [rows];
                 console.log("rows =>" , rows)
@@ -48,12 +54,16 @@ exports.fetchAllStudents = async (req, res) => {
 }
 exports.updateStudent = async (req, res) => {
     try {
+        const user = {
+            name: req.body.name,
+            email: req.body.email
+        }
         const result = await new Promise((resolve,reject)=>{
-            db.query("UPDATE students SET ? where id="+req.params.id+"", (err, rows, fields) => {
-                if (err) { reject(err) };
-                // var users = [rows];
-                console.log("rows =>" , rows)
-                resolve(rows);
+            db.query('UPDATE students SET ? WHERE id = ?', [user, req.params.id], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);    
             });
         })
         console.log("The solution is ", result);
