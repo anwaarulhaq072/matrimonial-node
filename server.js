@@ -6,6 +6,7 @@
 // import studentRouter from "./router/studentRouter.js"
 const express = require("express");
 const studentRouter = require("./router/studentRouter.js")
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(express.json());
